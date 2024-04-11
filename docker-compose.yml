@@ -18,7 +18,7 @@ services:
       - MYSQL_USER=clientUser1
       - MYSQL_PASSWORD=8NP1k26Tvk
     ports:
-      - '8013:3307'
+      - '8013:3306'
 
   webserver:
     image: nginx:alpine
