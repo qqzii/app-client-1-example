@@ -1,0 +1,66 @@
+version: '3.1'
+
+services:
+  redis:
+    image: redis:alpine
+    container_name: client-1-redis
+
+  mysql:
+    image: mysql:8.0
+    working_dir: /application
+    container_name: client-1-mysql
+    volumes:
+      - .:/application
+      - mysql-volume:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=8wSEWBkwLY
+      - MYSQL_DATABASE=client1
+      - MYSQL_USER=clientUser1
+      - MYSQL_PASSWORD=8NP1k26Tvk
+    ports:
+      - '8013:3307'
+
+  webserver:
+    image: nginx:alpine
+    working_dir: /application
+    container_name: client-1-nginx
+    depends_on:
+      - php-fpm
+    volumes:
+      - ./backend:/application
+      - ./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - '8020:80'
+
+  php-fpm:
+    build: docker/php-fpm
+    platform: linux/amd64
+    container_name: client-1-php-fpm
+    working_dir: /application
+    environment:
+      XDEBUG_MODE: "coverage"
+    security_opt:
+      - seccomp=unconfined
+    depends_on:
+      - mysql
+      - redis
+    volumes:
+      - ./backend:/application
+      - ./docker/php-fpm/php-ini-overrides.ini:/etc/php/8.1/fpm/conf.d/99-overrides.ini
+
+  node:
+    image: node:18
+    container_name: client-1-node
+    working_dir: /application
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./frontend:/application
+    command: "tail -f /dev/null"
+    ports:
+      - "5176:5176"
+    depends_on:
+      - php-fpm
+
+volumes:
+  mysql-volume:
