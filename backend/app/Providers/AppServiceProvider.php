@@ -14,7 +14,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+
     }
 
     /**
@@ -24,7 +24,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $socialite = $this->app->make(Factory::class);
-        $socialite->extend('skolkovo', function($app) use ($socialite) {
+        $socialite->extend('skolkovo', function ($app) use ($socialite) {
             return $socialite->buildProvider(SkolkovoProvider::class, $app['config']['services.skolkovo']);
         });
     }
