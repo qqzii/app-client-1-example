@@ -31,4 +31,13 @@ return [
         ],
     ],
 
+    'skolkovo' => [
+        'client_id' => env('SKOLKOVO_CLIENT_ID'),
+        'client_secret' => env('SKOLKOVO_CLIENT_SECRET'),
+        'redirect' => '/socialite/skolkovo/callback',
+        'authorize_url' => env('SKOLKOVO_AUTHORIZE_URL'),
+        'token_url' => env('SKOLKOVO_TOKEN_URL'),
+        'api_url' => env('SKOLKOVO_API_URL'),
+        'url' => env('SKOLKOVO_URL'),
+    ],
 ];
